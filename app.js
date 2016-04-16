@@ -17,8 +17,9 @@ $("#userInfoButton").click(function(){
 
 	function quizletAuth(username, pass) {
 		var str = makeid();
-		var redirectURI = "https://quizlet.com/authorize?response_type=code&client_id=4msU8P4c2B&scope=write_set&state="+str+"&redirect_uri="
+		var redirectURI = "https://quizlet.com/authorize?response_type=code&client_id=4msU8P4c2B&scope=write_set&state="+str;
 		//alert(redirectURI);
+		window.open(redirectURI,'auth time');
 	}
 
 	function makeid()
