@@ -2,14 +2,6 @@
   "name": "quizzy",
   "version": "1.0.0",
   "description": "",
-  "contributors": [
-    {
-      "name": "Kushal Tirumala",
-      "email": "superkushal93@gmail.com",
-      "url": "http://kushaltirumala.github.io"
-    },
-
-  ],
   "license": "MIT",
   "dependencies": {
     "ws": "*",
