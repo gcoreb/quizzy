@@ -5,10 +5,9 @@
   "license": "MIT",
   "dependencies": {
     "ws": "*",
-    "node-fs":"0.1.7",
-    "tesseract":"0.0.3"
+    "node-fs":"0.1.7"
   },
   "scripts": {
-    "start": "node app.js"
+    "start": "node index.js"
   }
 }
