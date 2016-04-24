@@ -1,8 +1,10 @@
 $(function(){
 
+
 $("#recognizeButton").click(function(){
+		alert('pressed');
 		var canvas = document.getElementById('canvas2');
-            Tesseract.recognize(canvas, {lang: 'eng'}).then(function (d) {
+            Tesseract.recognize(canvas, {progress: showProgress, lang: 'eng'}).then(function (d) {
                 console.log(d.text);
             }, function (err) {
                 console.log(err);
@@ -14,24 +16,62 @@ $("#userInfoButton").click(function(){
 });
 
 
-var inputElement = document.getElementById("fileupload");
-inputElement.addEventListener("change", handleFiles, false);
-function handleFiles() {
-  var fileList = this.files; 
-  console.log(fileList.length);
-  convertToCanvas(fileList[0]);
-}
+document.getElementById('files').addEventListener('change', handleFileSelect, false);
 
 var accessToken;
 
-// if(window.location.href.indexOf("code")!=-1){
-// 	continueQuizletAuth();
-// }
+if(window.location.href.indexOf("code")!=-1){
+	createPostReqForSet();
+}
+var terms = [];
+var def = [];
 
+function separateText(text) {
+	//this function could be where we do the seperating for temp purposes
+	var wordHeap = text.seperate(" ");
+	for(var i = 0; i < wordHeap,length; i+=2) {
+		terms.push(wordHeap[i]);
+	}
+	for(var i = 1; i < wordHeap.length; i+=2){
+		def.push(wordHeap[i]);
+	}
 
+	createPostReqForSet();
+
+}
+
+function createPostReqForSet() {
+		continueQuizletAuth();
+}
+
+function handleFileSelect(evt) {
+	//alert('hell yeah');
+    var files = evt.target.files; 
+
+    for (var i = 0, f; f = files[i]; i++) {
+
+      if (!f.type.match('image.*')) {
+        continue;
+      }
+
+      var reader = new FileReader();
+
+      reader.onload = (function(theFile) {
+        return function(e) {
+           convertToCanvas(e.target.result);
+        };
+      })(f);
+
+      reader.readAsDataURL(f);
+    }
+  }
+
+function showProgress(p) {
+	console.log(p);
+}
   function convertToCanvas (lastPhoto) {
 
-
+  		//console.log("link: " + lastPhoto);
         var canvas2 = document.getElementById("canvas2");
 
         canvas2.width = lastPhoto.width;
@@ -41,7 +81,7 @@ var accessToken;
         var canvasbanana = canvas2.getContext("2d");
 
         var img = new Image();
-        img.src = "photo.jpg";
+        img.src = lastPhoto;
         img.width = "1000";
         img.height="1000";
         canvas2.width = img.width;
@@ -58,25 +98,7 @@ var accessToken;
 		var currentURL = window.location.href;
 		var code = currentURL.substring(currentURL.indexOf("code=")+5);
 
-		// var xhrRequest = function (url, type, callback) {
-		// 	var xhr = new XMLHttpRequest();
-		//   	xhr.onload = function () {
-		//     	callback(this.responseText);
-		//   	};
-		//   	xhr.open(type, url, true);
-		//   	xhr.setRequestHeader("Authorization", "Basic 4msU8P4c2B:NG1zVThQNGMyQjpjbVRYeXB1N1FZcFUzN2NTYnp1ejJI");
-		//   	xhr.setRequestHeader("Content-Type", "application/jsonp; charset=UTF-8");
-		//   	xhr.send();
-
-		// }
-
-		// var url ="https://api.quizlet.com/oauth/token?grant_type=authorization_code&code="+code+"&redirect_uri=http://kushaltirumala.github.io/quizzy/index.html";
-		
-		// xhrRequest(url, "POST", function(resp){
-		// 	var jsonversion = form2Json(resp);
-		// 	accessToken = data.access_token;
-		// });
-		alert('about to post req');
+		//alert('about to post req');
 		var url ="https://api.quizlet.com/oauth/token?grant_type=authorization_code&code="+code+"&redirect_uri=http://kushaltirumala.github.io/quizzy/index.html";
 		 $.ajax({
             type:"POST",
