@@ -4,8 +4,7 @@
   "description": "",
   "license": "MIT",
   "dependencies": {
-    "ws": "*",
-    "node-fs":"0.1.7"
+    "request":"2.72.0"
   },
   "scripts": {
     "start": "node index.js"
