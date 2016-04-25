@@ -4,12 +4,13 @@ var bodyParser = require('body-parser');
 var request = require('request');
 
 app.get('/quizlet', function(req, res){
-	res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+	res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
     res.setHeader('Access-Control-Allow-Credentials', true);
+    res.setHeader('Content-Type', 'application/json');
 	var realCode = req.query.code;
-	res.send('code: ' + req.query.code);
+	//res.send('code: ' + req.query.code);
 	request({
 	    url: 'https://api.quizlet.com/oauth/token?grant_type=authorization_code&code='+realCode+'&redirect_uri=http://kushaltirumala.github.io/quizzy/analyze.html', 
 	    method: 'POST', 
@@ -22,14 +23,11 @@ app.get('/quizlet', function(req, res){
 	        console.log(error);
 	    } else {
 	        console.log(response.statusCode, body);
-	        //var jsonbody = JSON.parse(body);
-	        console.log("acces token for bryan chen:" + JSON.parse(body).access_token);
-	        
-
+	        var acstoken = JSON.parse(body).access_token;
+	        console.log("access token for bryan chen:" + acstoken);
+	        res.write(JSON.stringify({daisytodd:acstoken}));
 	    }
 	});
-
 });
-
 
 app.listen(3000);
